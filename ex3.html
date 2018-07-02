@@ -1,0 +1,96 @@
+<!--//Problem3: Create a linkedlist in javascript and write a function to find the midpoint for that linkedlist:
+//we are doing the JS code inside of an html because when it is tested in the terminal, it just show the initial "head" node.
+// this linked list implementation allow for "index access" + "data matching"-->
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Linked List</title>
+</head>
+<body>
+	<script>
+  // we need to create a class List
+  // List is the main container for all "nodes"
+  // a class is of no use until it has be instantiated...
+  // List is the base constructor
+	class List {
+		constructor() { // constructor class = the opposite of static class!
+			// Strings class with no constructor cannot be invoked using the 'new' keyword, and hence no instance can be made
+			this.head = null // this will be populated by the very first add method call in all of our program?
+			this.length = 0 // since we are inside of the constructor, we know List is a new list, which will have no nodes, i.e: this.length = 0
+		}
+
+		add(data) {
+  //i.e. on the first add, it will make length = 1, and index = 0 // all lists assume a 0 index is the first item..
+			this.length++
+			if (this.head) // means the list already has a node in the first position... i.e. head..
+				return this.head.add(data) //this means pass the add method call to the next node in the chain.. //  data must be sent, all nodes need data...
+			return this.head = new Node(data) // if you want a node because there isn't one, you need to create a node instance, we are saving it into the head of this list.
+  // we are returning here the node that is added!
+		}
+
+		findMiddle() { // we go through the list to see which node we need!
+			var index = Math.floor(this.length / 2) // since I am in the List class, this applies to the list instance...
+			return this.head.findByIndex(index) // only needs the node to know about findByIndex
+			//this refers to the list instance, and it is the instance we work with!
+      //the head is the only node we can directly access... // the findByIndex method belong to the node.
+		}
+	   findByIndex(index) {// this index is the search index!!!===> first index
+    // usually if we return no more code is parsed!! therefore this way to write code:
+		return index == this.head.index ? this.head : this.head.findByIndex(index);
+// or we could also said:
+/*
+//     if (index == this.head.index) {
+//       return this.head
+//     } else {
+//       return this.head.findByIndex(index);
+//   }
+*/
+	}
+		findByData(data) {
+			return data == this.head.data ? this.head : this.head.findByData(data);
+		}
+}
+//we need to create a Node Class:
+// we are creating here "linked nodes" which are treated as linked objects.
+// node is just one element in the list.
+// next in each node, is just the next node in the chain.
+	class Node {
+
+		constructor(data, index = 0) { // we need the index to be cero!; i.e: length -1
+			this.data = data // the first time where the data is been saved.
+			this.index = index // each new node will receive an index value... but in the case of the first, it won't have one, so will assume 0
+			this.next = null // next is same as head, but because its a node, it could be anywhere in the chain, so we use next...
+		}
+
+		add(data) {
+			if (this.next) //if this node has a next, you need to pass the data to the next node...
+				return this.next.add(data) //its the same as the list, if there is a next node, pass the add method to that node...
+          //if not, create a new node and make instance of next of this one...
+          // if i have no next, i create a new node which is my index + 1 /// i.e. i am 2, next index 3
+      return this.next = new Node(data, this.index + 1)
+		}
+
+		findByIndex(index) {
+			if (index == this.index)
+				return this
+			return this.next.findByIndex(index)
+		}
+
+
+		findByData(data) {
+			if (data == this.data)
+				return this
+			return this.next.findByData(data)
+		}
+
+	}
+
+	var list = new List() // list is the List instance!!! review what is an instanceee!!
+	console.log(list);
+  //an instance is a new Object based on a class template.
+  // our only way to interact with the List instance is through our variable list
+	</script>
+</body>
+</html>

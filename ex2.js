@@ -8,7 +8,7 @@ class Stack {
   }
 
   isEmpty() {
-    return this.getSize() ? false : true
+      return this.getSize() ? false : true
   }
 
   isFull() {
